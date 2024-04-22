@@ -1,0 +1,37 @@
+[package]
+name = "aptos-rust-sdk"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dev-dependencies]
+ed25519-dalek = { version = "2.1.1", features = ["default", "rand_core"] }
+tokio = { version = "1.37.0", features = ["macros"] }
+
+[dependencies]
+anyhow = "1.0.82"
+# TODO: We should get a proper crate for this
+bcs = { git = "https://github.com/aptos-labs/bcs.git", rev = "d31fab9d81748e2594be5cd5cdf845786a30562d" }
+bytes = "1.6.0"
+hex = "0.4.3"
+reqwest = { version = "0.11.27", features = ["cookies", "json"] }
+serde = "1.0.197"
+serde_bytes = "0.11.14"
+serde_json = "1.0.115" # TODO: We should avoid JSON and use BCS
+thiserror = "1.0.58"
+tokio = { version = "1.37.0" }
+url = "2.5.0"
+ed25519-dalek = "2.1.1"
+rand = "0.8.5"
+libsecp256k1 = "0.7.1"
+tiny-keccak = { version = "2.0.2", features = ["sha3"] }
+
+# Freeze dependency at a specific version so we can work on settling this out
+# We're going to have to copy a lot manually... The codebase is too large
+# aptos-sdk = { git = "https://github.com/aptos-labs/aptos-core", rev = "cc04e98bd380d3bbcf1161efe1eb290dd4d1dd28" }
+
+#[patch.crates-io]
+#serde-reflection = { git = "https://github.com/aptos-labs/serde-reflection", rev = "73b6bbf748334b71ff6d7d09d06a29e3062ca075" }
+#merlin = { git = "https://github.com/aptos-labs/merlin" }
+#x25519-dalek = { git = "https://github.com/aptos-labs/x25519-dalek", branch = "zeroize_v1" }

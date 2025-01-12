@@ -2,6 +2,7 @@
 // Parts of the project are originally copyright © Meta Platforms, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
+use anyhow::{bail, ensure};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use crate::types::api_types::address::AccountAddress;
@@ -324,7 +325,8 @@ impl TransactionAuthenticator {
                         .iter()
                         .map(|sig| AnySignature::ed25519(sig.clone()))
                         .collect();
-                    let signatures_bitmap = aptos_bitvec::BitVec::from(signature.bitmap().to_vec());
+                    panic!("FIXME");
+                    //let signatures_bitmap = aptos_bitvec::BitVec::from(signature.bitmap().to_vec());
                     let authenticator = MultiKeyAuthenticator {
                         public_keys,
                         signatures,
@@ -582,17 +584,13 @@ impl AccountAuthenticator {
 #[derive(
 Clone,
 Copy,
-CryptoHasher,
 Debug,
-DeserializeKey,
 Eq,
 Hash,
 Ord,
 PartialEq,
 PartialOrd,
-SerializeKey,
 )]
-#[cfg_attr(any(test, feature = "fuzzing"), derive(Arbitrary))]
 pub struct AuthenticationKey([u8; AuthenticationKey::LENGTH]);
 
 impl AuthenticationKey {
@@ -748,8 +746,8 @@ impl MultiKeyAuthenticator {
             "Too many public keys, {}, in MultiKeyAuthenticator.",
             public_keys.len(),
         );
-
-        let mut signatures_bitmap = aptos_bitvec::BitVec::with_num_bits(public_keys.len() as u16);
+        panic!("FIXME");
+        //let mut signatures_bitmap = aptos_bitvec::BitVec::with_num_bits(public_keys.len() as u16);
         let mut any_signatures = vec![];
 
         for (idx, signature) in signatures {

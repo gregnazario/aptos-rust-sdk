@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use crate::types::api_types::address::AccountAddress;
 
-#[derive(Clone, Eq, PartialEq, Serialize, Deserialize, Ord, PartialOrd, Hash)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, Ord, PartialOrd, Hash)]
 pub enum StateKey {
     AccessPath(AccessPath),
     TableItem {
@@ -14,7 +14,7 @@ pub enum StateKey {
     Raw(Vec<u8>),
 }
 
-#[derive(Clone, Eq, PartialEq, Hash, Serialize, Deserialize, Ord, PartialOrd)]
+#[derive(Clone, Debug, Eq, PartialEq, Hash, Serialize, Deserialize, Ord, PartialOrd)]
 pub struct AccessPath {
     pub address: AccountAddress,
     #[serde(with = "serde_bytes")]

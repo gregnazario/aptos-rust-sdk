@@ -1,7 +1,7 @@
 use crate::client::builder::AptosClientBuilder;
 use crate::client::config::AptosNetwork;
 use crate::client::response::{FullnodeResponse, ParsableResponse};
-use crate::types::mime_types::ACCEPT_BCS;
+use crate::types::mime_types::{ACCEPT_BCS, JSON};
 use crate::types::state::State;
 use crate::types::AptosResult;
 use reqwest::header::ACCEPT;
@@ -68,9 +68,11 @@ impl AptosFullnodeClient {
         let response = self
             .rest_client
             .get(url)
-            .header(ACCEPT, ACCEPT_BCS)
+            .header(ACCEPT, JSON)
             .send()
             .await?;
+
+        println!("{:?}", response);
 
         let parsable_response = ParsableResponse(response);
         parsable_response.parse_response().await
@@ -79,6 +81,6 @@ impl AptosFullnodeClient {
     /// Helper function to build the REST path on the current URL
     fn build_rest_path(&self, path: &str) -> AptosResult<Url> {
         let out = self.network.rest_url().join(path)?;
-        return Ok(out);
+        Ok(out)
     }
 }

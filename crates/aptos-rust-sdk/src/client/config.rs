@@ -68,6 +68,6 @@ impl AptosNetwork {
     }
 
     pub fn indexer_url(&self) -> &Url {
-        &self.rest_url
+        &self.indexer_url
     }
 }

@@ -7,6 +7,7 @@ use crate::types::api_types::hash::HashValue;
 use crate::types::api_types::identifier::Identifier;
 use crate::types::api_types::module_id::ModuleId;
 use crate::types::api_types::numbers::U64;
+use crate::types::api_types::transaction_authenticator::TransactionAuthenticator;
 use crate::types::api_types::type_tag::TypeTag;
 use crate::types::api_types::write_set::WriteSet;
 

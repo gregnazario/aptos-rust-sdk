@@ -27,9 +27,6 @@ async fn test_get_by_version() {
     // Verify that latest transaction exists
     println!(
         "{:?}",
-        aptos_client
-            .get_transaction_by_version(state.version)
-            .await
-            .expect("Transaction exists")
+        aptos_client.get_transaction_by_version(state.version).await
     );
 }

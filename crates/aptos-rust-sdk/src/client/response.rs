@@ -88,6 +88,19 @@ impl ParsableResponse {
             let state = self.state()?;
 
             Ok(FullnodeResponse::new(self.0.bytes().await?, state)
+                .and_then(|inner| serde_json::from_slice(&inner))?)
+        }
+    }
+
+    pub(crate) async fn parse_bcs_response<T: DeserializeOwned>(
+        self,
+    ) -> AptosResult<FullnodeResponse<T>> {
+        if !self.status().is_success() {
+            Err(self.parse_error().await)
+        } else {
+            let state = self.state()?;
+
+            Ok(FullnodeResponse::new(self.0.bytes().await?, state)
                 .and_then(|inner| bcs::from_bytes(&inner))?)
         }
     }

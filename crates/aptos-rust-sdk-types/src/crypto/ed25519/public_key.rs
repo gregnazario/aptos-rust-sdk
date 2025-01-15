@@ -1,10 +1,11 @@
-use crate::types::crypto::common::to_hex_string;
-use crate::types::crypto::ed25519::signature::Ed25519Signature;
-use crate::types::crypto::traits::PublicKey;
+use crate::crypto::common::to_hex_string;
+use crate::crypto::ed25519::signature::Ed25519Signature;
+use crate::crypto::traits::PublicKey;
 use ed25519_dalek::{Verifier, VerifyingKey};
 use std::fmt::{Debug, Display, Formatter};
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Ed25519PublicKey(VerifyingKey);
 
 impl From<VerifyingKey> for Ed25519PublicKey {

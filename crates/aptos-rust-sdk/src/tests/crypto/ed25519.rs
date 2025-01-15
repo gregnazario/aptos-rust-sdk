@@ -1,9 +1,9 @@
-use crate::types::crypto::ed25519::private_key::Ed25519PrivateKey;
-use crate::types::crypto::ed25519::public_key::Ed25519PublicKey;
-use crate::types::crypto::ed25519::signature::{
+use crate::crypto::ed25519::private_key::Ed25519PrivateKey;
+use crate::crypto::ed25519::public_key::Ed25519PublicKey;
+use crate::crypto::ed25519::signature::{
     check_signature_canonical, non_canonical_signature, Ed25519Signature,
 };
-use crate::types::crypto::traits::{PrivateKey, PublicKey};
+use crate::crypto::traits::{PrivateKey, PublicKey};
 use ed25519_dalek::{SigningKey, VerifyingKey};
 use rand::rngs::OsRng;
 use std::str::FromStr;

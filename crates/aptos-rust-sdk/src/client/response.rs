@@ -1,9 +1,9 @@
 // Copyright © Aptos Foundation
 // SPDX-License-Identifier: Apache-2.0
 
-use crate::types::error::{AptosError, RestError};
-use crate::types::state::State;
-use crate::types::AptosResult;
+use crate::error::{AptosError, RestError};
+use crate::state::State;
+use crate::AptosResult;
 use reqwest::StatusCode;
 use serde::de::DeserializeOwned;
 use std::fmt::Debug;

@@ -1,17 +1,20 @@
+use hex::FromHex;
+use serde::de::Error;
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::fmt;
 use std::fmt::{Debug, Display, Formatter};
 use std::str::FromStr;
-use hex::FromHex;
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use serde::de::Error;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum AccountAddressParseError {
     #[error("Account address hex characters are invalid: {0}")]
-    InvalidHexChars(String)
+    InvalidHexChars(String),
 }
 
+/// Represents an Aptos AccountAddress
+///
+/// An [`AccountAddress`] is underneath just a fixed 32 byte length.
 #[derive(Ord, PartialOrd, Eq, PartialEq, Hash, Clone, Copy)]
 pub struct AccountAddress([u8; AccountAddress::LENGTH]);
 
@@ -117,8 +120,8 @@ impl fmt::UpperHex for AccountAddress {
 
 impl<'de> Deserialize<'de> for AccountAddress {
     fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
-        where
-            D: Deserializer<'de>,
+    where
+        D: Deserializer<'de>,
     {
         if deserializer.is_human_readable() {
             let s = <String>::deserialize(deserializer)?;
@@ -139,8 +142,8 @@ impl<'de> Deserialize<'de> for AccountAddress {
 
 impl Serialize for AccountAddress {
     fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         if serializer.is_human_readable() {
             // TODO: We differ from the aptos core representation, by appending 0x (does it matter as it should be parsed)

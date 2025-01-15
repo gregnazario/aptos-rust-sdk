@@ -1,7 +1,7 @@
-use crate::types::crypto::hash::HashValue;
-use crate::types::crypto::secp256k1::public_key::Secp256k1PublicKey;
-use crate::types::crypto::secp256k1::signature::Secp256k1Signature;
-use crate::types::crypto::traits::PrivateKey;
+use crate::crypto::hash::HashValue;
+use crate::crypto::secp256k1::public_key::Secp256k1PublicKey;
+use crate::crypto::secp256k1::signature::Secp256k1Signature;
+use crate::crypto::traits::PrivateKey;
 use hex::FromHex;
 use libsecp256k1::SecretKey;
 use std::fmt::{Debug, Display, Formatter};

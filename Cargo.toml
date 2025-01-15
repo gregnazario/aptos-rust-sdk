@@ -2,7 +2,7 @@
 resolver = "2"
 
 members = [
-    "crates/aptos-rust-sdk",
+    "crates/aptos-rust-sdk", "crates/aptos-rust-sdk-types",
     "crates/examples"
 ]
 

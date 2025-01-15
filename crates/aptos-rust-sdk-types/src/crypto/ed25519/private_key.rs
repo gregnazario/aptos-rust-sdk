@@ -1,6 +1,6 @@
-use crate::types::crypto::ed25519::public_key::Ed25519PublicKey;
-use crate::types::crypto::ed25519::signature::Ed25519Signature;
-use crate::types::crypto::traits::PrivateKey;
+use crate::crypto::ed25519::public_key::Ed25519PublicKey;
+use crate::crypto::ed25519::signature::Ed25519Signature;
+use crate::crypto::traits::PrivateKey;
 use ed25519_dalek::{Signer, SigningKey};
 use hex::FromHex;
 use std::fmt::{Debug, Display, Formatter};

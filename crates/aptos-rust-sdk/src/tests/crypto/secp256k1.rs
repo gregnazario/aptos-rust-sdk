@@ -1,5 +1,5 @@
-use crate::types::crypto::secp256k1::private_key::Secp256k1PrivateKey;
-use crate::types::crypto::traits::{PrivateKey, PublicKey};
+use crate::crypto::secp256k1::private_key::Secp256k1PrivateKey;
+use crate::crypto::traits::{PrivateKey, PublicKey};
 use libsecp256k1::SecretKey;
 use rand::rngs::OsRng;
 use std::str::FromStr;

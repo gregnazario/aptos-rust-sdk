@@ -1,7 +1,7 @@
 use crate::client::config::AptosNetwork;
 use crate::client::rest_api::AptosFullnodeClient;
-use crate::types::headers::X_APTOS_CLIENT;
-use crate::types::AptosResult;
+use crate::headers::X_APTOS_CLIENT;
+use crate::AptosResult;
 use reqwest::{
     header::{self, HeaderMap, HeaderName, HeaderValue},
     Client as ReqwestClient, ClientBuilder as ReqwestClientBuilder,

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
-use crate::types::api_types::address::AccountAddress;
-use crate::types::api_types::identifier::Identifier;
+use crate::api_types::address::AccountAddress;
+use crate::api_types::identifier::Identifier;
 
 /// Represents the initial key into global storage where we first index by the address, and then
 /// the struct tag. The struct fields are public to support pattern matching.

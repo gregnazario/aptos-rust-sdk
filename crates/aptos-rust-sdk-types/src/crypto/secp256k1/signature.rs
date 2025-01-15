@@ -1,4 +1,4 @@
-use crate::types::crypto::traits::Signature;
+use crate::crypto::traits::Signature;
 use std::fmt::{Debug, Display, Formatter};
 
 #[derive(Clone)]

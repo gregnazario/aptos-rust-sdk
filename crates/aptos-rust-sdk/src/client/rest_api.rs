@@ -1,9 +1,9 @@
 use crate::client::builder::AptosClientBuilder;
 use crate::client::config::AptosNetwork;
 use crate::client::response::{FullnodeResponse, ParsableResponse};
-use crate::types::mime_types::{ACCEPT_BCS, JSON};
-use crate::types::state::State;
-use crate::types::AptosResult;
+use crate::mime_types::{ACCEPT_BCS, JSON};
+use crate::state::State;
+use crate::AptosResult;
 use reqwest::header::ACCEPT;
 use reqwest::Client as ReqwestClient;
 use serde::de::DeserializeOwned;

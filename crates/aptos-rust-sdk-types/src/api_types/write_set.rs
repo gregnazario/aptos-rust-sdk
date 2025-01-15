@@ -1,7 +1,7 @@
 use std::collections::{btree_map, BTreeMap};
 use bytes::Bytes;
 use serde::{Deserialize, Serialize};
-use crate::types::api_types::state_key::StateKey;
+use crate::api_types::state_key::StateKey;
 
 #[derive(
 Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize,
@@ -85,10 +85,10 @@ impl WriteSetMut {
 
         for (key, op) in other.write_set.into_iter() {
             match self.write_set.entry(key) {
-                Occupied(mut entry) => {
-                    if !WriteOp::squash(entry.get_mut(), op)? {
+                Occupied(_entry) => {
+                    /*TODO: FIXME if !WriteOp::squash(entry.get_mut(), op)? {
                         entry.remove();
-                    }
+                    }*/
                 }
                 Vacant(entry) => {
                     entry.insert(op);
@@ -101,14 +101,14 @@ impl WriteSetMut {
 }
 
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize)]
 pub enum WriteOp {
     Creation {
-        data: Bytes,
+        data: Vec<u8>,
         metadata: StateValueMetadata,
     },
     Modification {
-        data: Bytes,
+        data: Vec<u8>,
         metadata: StateValueMetadata,
     },
     Deletion {
@@ -116,12 +116,12 @@ pub enum WriteOp {
     },
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub struct StateValueMetadata {
     inner: Option<StateValueMetadataInner>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 struct StateValueMetadataInner {
     slot_deposit: u64,
     bytes_deposit: u64,

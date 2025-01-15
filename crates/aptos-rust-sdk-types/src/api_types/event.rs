@@ -1,6 +1,6 @@
+use crate::api_types::address::AccountAddress;
+use crate::api_types::type_tag::TypeTag;
 use serde::{Deserialize, Serialize};
-use crate::types::api_types::address::AccountAddress;
-use crate::types::api_types::type_tag::TypeTag;
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct EventKey {

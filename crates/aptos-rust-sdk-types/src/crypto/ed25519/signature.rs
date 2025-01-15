@@ -1,20 +1,28 @@
-use crate::types::crypto::traits::Signature;
+use crate::crypto::traits::Signature;
 use anyhow::anyhow;
 use ed25519_dalek::ed25519::SignatureBytes;
 use std::cmp::Ordering;
 use std::fmt::{Debug, Display, Formatter};
+use std::hash::{Hash, Hasher};
 
 const L: [u8; 32] = [
     0xED, 0xD3, 0xF5, 0x5C, 0x1A, 0x63, 0x12, 0x58, 0xD6, 0x9C, 0xF7, 0xA2, 0xDE, 0xF9, 0xDE, 0x14,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10,
 ];
 
-#[derive(Clone)]
+#[derive(Clone, Eq, PartialEq)]
 pub struct Ed25519Signature(ed25519_dalek::Signature);
 
 impl Ed25519Signature {
     pub(crate) fn inner(&self) -> &ed25519_dalek::Signature {
         &self.0
+    }
+}
+
+impl Hash for Ed25519Signature {
+    // TODO: This is a hack for now
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.inner().to_vec().hash(state);
     }
 }
 

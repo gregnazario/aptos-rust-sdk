@@ -1,7 +1,7 @@
-use crate::types::crypto::common::to_hex_string;
-use crate::types::crypto::secp256k1::private_key::bytes_to_message;
-use crate::types::crypto::secp256k1::signature::Secp256k1Signature;
-use crate::types::crypto::traits::PublicKey;
+use crate::crypto::common::to_hex_string;
+use crate::crypto::secp256k1::private_key::bytes_to_message;
+use crate::crypto::secp256k1::signature::Secp256k1Signature;
+use crate::crypto::traits::PublicKey;
 use anyhow::anyhow;
 use std::fmt::{Debug, Display, Formatter};
 

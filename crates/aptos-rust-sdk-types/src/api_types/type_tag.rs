@@ -1,9 +1,9 @@
-use std::fmt::{Debug};
-use std::str::FromStr;
+use crate::api_types::address::AccountAddress;
+use crate::api_types::identifier::String;
+use crate::api_types::module_id::ModuleId;
 use serde::{Deserialize, Serialize};
-use crate::types::api_types::address::AccountAddress;
-use crate::types::api_types::identifier::Identifier;
-use crate::types::api_types::module_id::ModuleId;
+use std::fmt::Debug;
+use std::str::FromStr;
 
 pub const CODE_TAG: u8 = 0;
 pub const RESOURCE_TAG: u8 = 1;
@@ -24,13 +24,9 @@ pub enum TypeTag {
     #[serde(rename = "signer", alias = "Signer")]
     Signer,
     #[serde(rename = "vector", alias = "Vector")]
-    Vector(
-        Box<TypeTag>,
-    ),
+    Vector(Box<TypeTag>),
     #[serde(rename = "struct", alias = "Struct")]
-    Struct(
-        Box<StructTag>,
-    ),
+    Struct(Box<StructTag>),
 
     // NOTE: Added in bytecode version v6, do not reorder!
     #[serde(rename = "u16", alias = "U16")]
@@ -73,7 +69,7 @@ impl TypeTag {
 impl FromStr for TypeTag {
     type Err = anyhow::Error;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(_s: &str) -> Result<Self, Self::Err> {
         //parse_type_tag(s)
         unimplemented!("Need to implement parse type tag")
     }
@@ -82,8 +78,8 @@ impl FromStr for TypeTag {
 #[derive(Serialize, Deserialize, Debug, PartialEq, Hash, Eq, Clone, PartialOrd, Ord)]
 pub struct StructTag {
     pub address: AccountAddress,
-    pub module: Identifier,
-    pub name: Identifier,
+    pub module: String,
+    pub name: String,
     // alias for compatibility with old json serialized data.
     #[serde(rename = "type_args", alias = "type_params")]
     pub type_params: Vec<TypeTag>,
@@ -144,10 +140,7 @@ impl StructTag {
         }
         format!(
             "{}::{}::{}{}",
-            self.address.to_canonical_string(),
-            self.module,
-            self.name,
-            generics
+            self.address, self.module, self.name, generics
         )
     }
 }
@@ -155,7 +148,7 @@ impl StructTag {
 impl FromStr for StructTag {
     type Err = anyhow::Error;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(_s: &str) -> Result<Self, Self::Err> {
         // TODO
         unimplemented!("Need to implement parse struct tag")
     }

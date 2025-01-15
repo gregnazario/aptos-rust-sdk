@@ -1,15 +1,15 @@
 use serde::{Deserialize, Serialize};
 use tokio::sync::OnceCell;
-use crate::types::api_types::address::AccountAddress;
-use crate::types::api_types::chain_id::ChainId;
-use crate::types::api_types::event::ContractEvent;
-use crate::types::api_types::hash::HashValue;
-use crate::types::api_types::identifier::Identifier;
-use crate::types::api_types::module_id::ModuleId;
-use crate::types::api_types::numbers::U64;
-use crate::types::api_types::transaction_authenticator::TransactionAuthenticator;
-use crate::types::api_types::type_tag::TypeTag;
-use crate::types::api_types::write_set::WriteSet;
+use crate::api_types::address::AccountAddress;
+use crate::api_types::chain_id::ChainId;
+use crate::api_types::event::ContractEvent;
+use crate::api_types::hash::HashValue;
+use crate::api_types::identifier::Identifier;
+use crate::api_types::module_id::ModuleId;
+use crate::api_types::numbers::U64;
+use crate::api_types::transaction_authenticator::TransactionAuthenticator;
+use crate::api_types::type_tag::TypeTag;
+use crate::api_types::write_set::WriteSet;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum TransactionData {
@@ -82,7 +82,7 @@ pub struct TransactionInfo {
     pub vm_status: String,
     pub accumulator_root_hash: HashValue,
     /// Final state of resources changed by the transaction
-    pub changes: Vec<WriteSetChange>,
+    pub changes: Vec<WriteSet>,
     /// Block height that the transaction belongs in, this field will not be present through the API
     #[serde(skip_serializing_if = "Option::is_none")]
     pub block_height: Option<U64>,

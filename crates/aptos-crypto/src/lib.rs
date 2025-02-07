@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #![forbid(unsafe_code)]
-#![deny(missing_docs)]
 
 //! A library supplying various cryptographic primitives
 pub mod asymmetric_encryption;

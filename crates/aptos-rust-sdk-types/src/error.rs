@@ -1,11 +1,11 @@
 // Copyright © Aptos Foundation
 // SPDX-License-Identifier: Apache-2.0
 
+use crate::state::State;
 use reqwest::header::{InvalidHeaderName, InvalidHeaderValue};
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
-use crate::state::State;
 
 /// These codes provide more granular error information beyond just the HTTP
 /// status code of the response.

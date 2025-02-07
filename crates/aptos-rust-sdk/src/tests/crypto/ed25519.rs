@@ -1,4 +1,4 @@
-use aptos_rust_sdk_types::crypto::ed25519::private_key::Ed25519PrivateKey;
+/*use aptos_rust_sdk_types::crypto::ed25519::private_key::Ed25519PrivateKey;
 use aptos_rust_sdk_types::crypto::ed25519::public_key::Ed25519PublicKey;
 use aptos_rust_sdk_types::crypto::ed25519::signature::{
     check_signature_canonical, Ed25519Signature,
@@ -91,3 +91,4 @@ fn test_signature_malleability() {
 
     Ed25519Signature::try_from(non_canonical).expect_err("Must be a non-canonical signature");
 }
+*/

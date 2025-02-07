@@ -1,12 +1,12 @@
 // Copyright © Aptos Foundation
 // SPDX-License-Identifier: Apache-2.0
 
+use aptos_rust_sdk_types::error::{AptosError, RestError};
+use aptos_rust_sdk_types::state::State;
+use aptos_rust_sdk_types::AptosResult;
 use reqwest::StatusCode;
 use serde::de::DeserializeOwned;
 use std::fmt::Debug;
-use aptos_rust_sdk_types::AptosResult;
-use aptos_rust_sdk_types::error::{AptosError, RestError};
-use aptos_rust_sdk_types::state::State;
 
 /// A response type to hold fullnode responses with strong typing
 #[derive(Debug)]
@@ -89,19 +89,6 @@ impl ParsableResponse {
 
             Ok(FullnodeResponse::new(self.0.bytes().await?, state)
                 .and_then(|inner| serde_json::from_slice(&inner))?)
-        }
-    }
-
-    pub(crate) async fn parse_bcs_response<T: DeserializeOwned>(
-        self,
-    ) -> AptosResult<FullnodeResponse<T>> {
-        if !self.status().is_success() {
-            Err(self.parse_error().await)
-        } else {
-            let state = self.state()?;
-
-            Ok(FullnodeResponse::new(self.0.bytes().await?, state)
-                .and_then(|inner| bcs::from_bytes(&inner))?)
         }
     }
 

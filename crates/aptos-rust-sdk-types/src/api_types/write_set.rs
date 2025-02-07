@@ -1,20 +1,16 @@
-use std::collections::{btree_map, BTreeMap};
-use serde::{Deserialize, Serialize};
 use crate::api_types::state_key::StateKey;
+use serde::{Deserialize, Serialize};
+use std::collections::{btree_map, BTreeMap};
 
-#[derive(
-Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize,
-)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize)]
 pub enum WriteSet {
     V0(WriteSetV0),
 }
 
-
 /// `WriteSet` contains all access paths that one transaction modifies. Each of them is a `WriteOp`
 /// where `Value(val)` means that serialized representation should be updated to `val`, and
 /// `Deletion` means that we are going to delete this access path.
-#[derive(Clone, Debug, Default, Eq, Hash, PartialEq, Serialize, Deserialize,
-)]
+#[derive(Clone, Debug, Default, Eq, Hash, PartialEq, Serialize, Deserialize)]
 pub struct WriteSetV0(WriteSetMut);
 
 impl WriteSetV0 {
@@ -43,7 +39,7 @@ pub struct WriteSetMut {
 }
 
 impl WriteSetMut {
-    pub fn new(write_ops: impl IntoIterator<Item=(StateKey, WriteOp)>) -> Self {
+    pub fn new(write_ops: impl IntoIterator<Item = (StateKey, WriteOp)>) -> Self {
         Self {
             write_set: write_ops.into_iter().collect(),
         }
@@ -53,7 +49,7 @@ impl WriteSetMut {
         self.write_set.insert(item.0, item.1);
     }
 
-    pub fn extend(&mut self, write_ops: impl IntoIterator<Item=(StateKey, WriteOp)>) {
+    pub fn extend(&mut self, write_ops: impl IntoIterator<Item = (StateKey, WriteOp)>) {
         self.write_set.extend(write_ops);
     }
 
@@ -98,7 +94,6 @@ impl WriteSetMut {
         Ok(self)
     }
 }
-
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize)]
 pub enum WriteOp {

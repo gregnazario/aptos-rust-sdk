@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use crate::api_types::address::AccountAddress;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, Ord, PartialOrd, Hash)]
 pub enum StateKey {

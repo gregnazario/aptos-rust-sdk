@@ -4,12 +4,11 @@
 
 use crate::api_types::address::AccountAddress;
 use crate::api_types::transaction::RawTransaction;
-use crate::crypto::ed25519::public_key::Ed25519PublicKey;
-use crate::crypto::ed25519::signature::Ed25519Signature;
-use crate::crypto::hash::HashValue;
-use anyhow::{bail, ensure};
+use anyhow::ensure;
+use aptos_crypto::ed25519::{Ed25519PublicKey, Ed25519Signature};
+use aptos_crypto::HashValue;
 use rand::rngs::OsRng;
-use rand::Rng;
+use rand::RngCore;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::fmt;
 use std::hash::Hash;
@@ -122,12 +121,8 @@ impl TransactionAuthenticator {
             ));
         }
         match self {
-            Self::Ed25519 {
-                ..
-            } => unimplemented!("TODO"), //signature.verify(raw_txn, public_key),
-            Self::FeePayer {
-                ..
-            } => {
+            Self::Ed25519 { .. } => unimplemented!("TODO"), //signature.verify(raw_txn, public_key),
+            Self::FeePayer { .. } => {
                 // In the fee payer model, the fee payer address can be optionally signed. We
                 // realized when we designed the fee payer model, that we made it too restrictive
                 // by requiring the signature over the fee payer address. So now we need to live in
@@ -168,9 +163,7 @@ impl TransactionAuthenticator {
                 Ok(())*/
                 unimplemented!("TODO")
             }
-            Self::MultiAgent {
-                ..
-            } => {
+            Self::MultiAgent { .. } => {
                 /*let message = RawTransactionWithData::new_multi_agent(
                     raw_txn.clone(),
                     secondary_signer_addresses.clone(),
@@ -462,9 +455,7 @@ impl AccountAuthenticator {
     /// Return Ok if the authenticator's public key matches its signature, Err otherwise
     pub fn verify<T: Serialize + Hash>(&self, message: &T) -> Result<(), anyhow::Error> {
         match self {
-            Self::Ed25519 {
-                ..
-            } => unimplemented!("TODO"), //signature.verify(message, public_key),
+            Self::Ed25519 { .. } => unimplemented!("TODO"), //signature.verify(message, public_key),
             Self::SingleKey { authenticator } => authenticator.verify(message),
             Self::MultiKey { authenticator } => authenticator.verify(message),
         }
@@ -473,7 +464,7 @@ impl AccountAuthenticator {
     /// Return the raw bytes of `self.public_key`
     pub fn public_key_bytes(&self) -> Vec<u8> {
         match self {
-            Self::Ed25519 { public_key, .. } => public_key.as_ref().to_vec(),
+            Self::Ed25519 { public_key, .. } => public_key.to_bytes().to_vec(),
             Self::SingleKey { authenticator } => authenticator.public_key_bytes(),
             Self::MultiKey { authenticator } => authenticator.public_key_bytes(),
         }
@@ -482,7 +473,7 @@ impl AccountAuthenticator {
     /// Return the raw bytes of `self.signature`
     pub fn signature_bytes(&self) -> Vec<u8> {
         match self {
-            Self::Ed25519 { signature, .. } => signature.into(),
+            Self::Ed25519 { signature, .. } => signature.to_bytes().to_vec(),
             Self::SingleKey { authenticator } => authenticator.signature_bytes(),
             Self::MultiKey { authenticator } => authenticator.signature_bytes(),
         }
@@ -526,7 +517,7 @@ impl AuthenticationKey {
     /// Create an authentication key from a preimage by taking its sha3 hash
     pub fn from_preimage(mut public_key_bytes: Vec<u8>, scheme: Scheme) -> AuthenticationKey {
         public_key_bytes.push(scheme as u8);
-        AuthenticationKey::new(*HashValue::sha3_256(&public_key_bytes).as_slice())
+        AuthenticationKey::new(*HashValue::sha3_256_of(&public_key_bytes))
     }
 
     /// Construct a preimage from a transaction-derived AUID as (txn_hash || auid_scheme_id)
@@ -539,7 +530,7 @@ impl AuthenticationKey {
 
     /// Create an authentication key from an Ed25519 public key
     pub fn ed25519(public_key: &Ed25519PublicKey) -> AuthenticationKey {
-        Self::from_preimage(public_key.into(), Scheme::Ed25519)
+        Self::from_preimage(public_key.to_bytes().to_vec(), Scheme::Ed25519)
     }
 
     /// Create an authentication key from an AnyPublicKey
@@ -565,7 +556,8 @@ impl AuthenticationKey {
     /// Create a random authentication key. For testing only
     pub fn random() -> Self {
         let mut rng = OsRng;
-        let buf: [u8; Self::LENGTH] = rng.gen();
+        let mut buf: [u8; Self::LENGTH] = [0; Self::LENGTH];
+        rng.try_fill_bytes(buf.as_mut()).unwrap();
         AuthenticationKey::new(buf)
     }
 }
@@ -746,7 +738,7 @@ impl MultiKeyAuthenticator {
 
     pub fn signature_bytes(&self) -> Vec<u8> {
         /*bcs::to_bytes(&(&self.signatures, &self.signatures_bitmap))
-            .expect("Only unhandleable errors happen here.")*/
+        .expect("Only unhandleable errors happen here.")*/
         unimplemented!("Needs aptos bitvec");
     }
 }
@@ -849,14 +841,13 @@ impl AnySignature {
     pub fn verify<T: Serialize + Hash>(
         &self,
         public_key: &AnyPublicKey,
-        message: &T,
+        _message: &T,
     ) -> Result<(), anyhow::Error> {
         match (self, public_key) {
-            (Self::Ed25519 { signature }, AnyPublicKey::Ed25519 { public_key }) => {
+            (Self::Ed25519 { .. }, AnyPublicKey::Ed25519 { .. }) => {
                 //signature.verify(message, public_key)
                 unimplemented!()
             }
-            _ => bail!("Invalid key, signature pairing"),
         }
     }
 }
@@ -887,16 +878,13 @@ impl EphemeralSignature {
 
     pub fn verify<T: Serialize>(
         &self,
-        message: &T,
+        _message: &T,
         public_key: &EphemeralPublicKey,
     ) -> Result<(), anyhow::Error> {
         match (self, public_key) {
-            (Self::Ed25519 { signature }, EphemeralPublicKey::Ed25519 { public_key }) => {
+            (Self::Ed25519 { .. }, EphemeralPublicKey::Ed25519 { .. }) => {
                 //signature.verify(message, public_key)
                 unimplemented!()
-            }
-            _ => {
-                bail!("Unsupported ephemeral signature and public key combination");
             }
         }
     }
